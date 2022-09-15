@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Graph : MonoBehaviour
+public class Graph
 {
 
     public int vertices;
@@ -13,7 +13,7 @@ public class Graph : MonoBehaviour
     public List<Edge> edges;
     public List<LinkedList<int>> tree_adj_list;
     private int randomDelete;
-    private int[] randomIdx;
+    private List<int> randomIdx;
     private List<Edge> treeEdges;
     public List<Edge> listOfDeletedEdges;
 
@@ -38,7 +38,7 @@ public class Graph : MonoBehaviour
             vertexList.Add(i);
         }
         randomDelete = UnityEngine.Random.Range(2, 4);
-        randomIdx = new int[randomDelete];        
+        randomIdx = new List<int>();
     }
 
     public void Kruskals_MST(List<Edge> edges, List<int> vertices)
@@ -164,27 +164,24 @@ public class Graph : MonoBehaviour
 
     public void randomDeletion()
     {
-        int idx = 0;
         while(randomDelete > 0)
         {
             int temp = UnityEngine.Random.Range(0, treeEdges.Count);
             if (!randomIdx.Contains(temp))
             {
-                randomIdx[idx] = temp;
+                randomIdx.Add(temp);
                 randomDelete--;
-                idx++;
             }
         }
-        for(int i = 0; i < randomIdx.Length; i++)
+        for(int i = 0; i < randomIdx.Count; i++)
         {
             listOfDeletedEdges.Add(treeEdges[randomIdx[i]]);
-            treeEdges.RemoveAt(randomIdx[i]);
             tree_adj_list[treeEdges[randomIdx[i]].vertexId1].Remove(treeEdges[randomIdx[i]].vertexId2);
             tree_adj_list[treeEdges[randomIdx[i]].vertexId2].Remove(treeEdges[randomIdx[i]].vertexId1);
         }
     }
 
-    private void findTreeEdges()
+    public void findTreeEdges()
     {
         for(int i = 0; i < tree_adj_list.Count; i++)
         {

@@ -22,11 +22,15 @@ public class GameManager : MonoBehaviour
 
         g.Kruskals_MST(g.edges, g.vertexList);
 
+        g.findTreeEdges();
+
         g.randomDeletion();
 
         foreach (Edge edge in g.listOfDeletedEdges)
         {
+            Debug.Log("***************");
             g.DFS_for_tree(edge.vertexId1);
+            Debug.Log("***************");
             g.DFS_for_tree(edge.vertexId2);
         }
 

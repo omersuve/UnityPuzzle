@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour
     public int Score;
     private Graph g;
     private List<Edge> resultedListEdges;
+    private List<HashSet<int>> resblocks;
 
     void Start()
     {
@@ -25,14 +27,34 @@ public class GameManager : MonoBehaviour
         g.findTreeEdges();
 
         g.randomDeletion();
-
-        foreach (Edge edge in g.listOfDeletedEdges)
+        int k = 0;
+        for (int i = 0; i < g.listOfDeletedEdges.Count; i++)
         {
+            g.blocks.Add(new HashSet<int>());
             Debug.Log("***************");
-            g.DFS_for_tree(edge.vertexId1);
+            g.DFS_for_tree(g.listOfDeletedEdges[i].vertexId1, k);
+            g.blocks.Add(new HashSet<int>());
             Debug.Log("***************");
-            g.DFS_for_tree(edge.vertexId2);
+            g.DFS_for_tree(g.listOfDeletedEdges[i].vertexId2, k+1);
+            k += 2;
         }
+
+        resblocks = CopyList(g.blocks);
+
+        for(int i = 0; i < g.blocks.Count-1; i++)
+        {
+            for(int j = i+1; j < g.blocks.Count; j++)
+            {
+                if (g.blocks[i].SetEquals(g.blocks[j]))
+                {
+                    resblocks.Remove(g.blocks[i]);
+                }
+            }
+        }
+
+        Debug.Log(resblocks.ToString());
+
+        //my_hashset.SetEquals(other);
 
         //GenerateGrid();
         //DrawUpwards(Color.red);
@@ -146,5 +168,15 @@ public class GameManager : MonoBehaviour
             var targetPosition2 = new Vector2((float)(valX - 0.5), (float)(valY - 0.5));
             DrawLine(initPositionY, targetPosition2, color);
         }
+    }
+
+    private List<HashSet<int>> CopyList(List<HashSet<int>> l)
+    {
+        List<HashSet<int>> res = new List<HashSet<int>>();
+        foreach (HashSet<int> l2 in l)
+        {
+            res.Add(l2);
+        }
+        return res;
     }
 }

@@ -16,6 +16,8 @@ public class Graph
     private List<int> randomIdx;
     private List<Edge> treeEdges;
     public List<Edge> listOfDeletedEdges;
+    public List<HashSet<int>> blocks;
+
 
     public Graph(int v)
     {
@@ -39,6 +41,7 @@ public class Graph
         }
         randomDelete = UnityEngine.Random.Range(2, 4);
         randomIdx = new List<int>();
+        blocks = new List<HashSet<int>>();
     }
 
     public void Kruskals_MST(List<Edge> edges, List<int> vertices)
@@ -124,26 +127,27 @@ public class Graph
         DFS_helper(v, visited);
     }
 
-    void DFS_helper_for_tree(int v, bool[] visited)
+    void DFS_helper_for_tree(int v, bool[] visited, int idx)
     {
         visited[v] = true;
         Debug.LogFormat(v + " ");
+        blocks[idx].Add(v);
 
         LinkedList<int>.Enumerator iter = tree_adj_list[v].GetEnumerator();
         while (iter.MoveNext())
         {
             int n = iter.Current;
             if (!visited[n])
-                DFS_helper_for_tree(n, visited);
+                DFS_helper_for_tree(n, visited, idx);
         }
     }
 
 
-    public void DFS_for_tree(int v)
+    public void DFS_for_tree(int v, int idx)
     {
         bool[] visited = new bool[vertices];
 
-        DFS_helper_for_tree(v, visited);
+        DFS_helper_for_tree(v, visited, idx);
     }
 
     public void addEdge(int v1, int v2, int w)

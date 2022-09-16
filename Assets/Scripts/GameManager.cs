@@ -68,6 +68,8 @@ public class GameManager : MonoBehaviour
                 Debug.Log(v);
                 GameObject.Find(v.ToString()).transform.SetParent(GameObject.Find("piece"+i).transform);
             }
+            GameObject block = GameObject.Find("piece" + i);
+            block.tag = i.ToString();
         }
     }
 
@@ -76,22 +78,26 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+            Debug.Log(hit);
             if (hit.transform.CompareTag("Piece"))
             {
+                Debug.Log("girdi");
                 selectedPiece = hit.transform.gameObject;
-                selectedParentBlock = selectedPiece.GetComponentInParent<GameObject>();
+                Transform temp = selectedPiece.transform.parent;
+                selectedParentBlock = GameObject.FindGameObjectWithTag(temp.tag);
             }
         }
 
         if (Input.GetMouseButtonUp(0))
         {
             selectedPiece = null;
+            selectedParentBlock = null;
         }
 
-        if(selectedPiece != null)
+        if(selectedParentBlock != null)
         {
             Vector3 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            selectedPiece.transform.position = new Vector3(mousePoint.x, mousePoint.y, 0);
+            selectedParentBlock.transform.position = new Vector3(mousePoint.x, mousePoint.y, 0);
         }
     }
 

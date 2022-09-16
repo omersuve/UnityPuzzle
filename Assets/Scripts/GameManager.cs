@@ -87,12 +87,10 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-            Debug.Log(hit);
             try
             {
                 if (hit.transform.CompareTag("Piece"))
                 {
-                    Debug.Log("girdi");
                     selectedPiece = hit.transform.gameObject;
                     Transform temp = selectedPiece.transform.parent;
                     selectedParentBlock = GameObject.FindGameObjectWithTag(temp.tag);

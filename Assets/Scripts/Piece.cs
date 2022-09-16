@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Piece : MonoBehaviour
 {
-    public GameObject piece;
-    public Vector3 position;
+    GameObject piece;
+    Vector3 position;
 
     void Start()
     {

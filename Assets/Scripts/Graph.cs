@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -39,7 +38,7 @@ public class Graph
         {
             vertexList.Add(i);
         }
-        randomDelete = UnityEngine.Random.Range(2, 4);
+        randomDelete = Random.Range(6, 9);
         randomIdx = new List<int>();
         blocks = new List<HashSet<int>>();
     }
@@ -141,7 +140,6 @@ public class Graph
                 DFS_helper_for_tree(n, visited, idx);
         }
     }
-
 
     public void DFS_for_tree(int v, int idx)
     {

@@ -1,17 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    private Vector3 RightPos;
+    public Vector3 RightPos;
     public bool isInRightPos = false;
     public List<Vector3> locations;
     void Start()
     {
         RightPos = transform.position;
-        transform.position = new Vector3 (Random.Range(4f,6f), Random.Range(-3f, 3f));
-        GameObject[] pieceList = GameObject.FindGameObjectsWithTag("Piece");
+        transform.position = new Vector3 (Random.Range(6f,8f), Random.Range(-2f, 2f));
+        //GameObject[] pieceList = GameObject.FindGameObjectsWithTag("Piece");
         //foreach (GameObject piece in pieceList)
         //{
         //    locations.Add(piece.transform.position);

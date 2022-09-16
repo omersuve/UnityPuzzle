@@ -1,19 +1,15 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private int _width = 6;
-    [SerializeField] private int _height = 6;
-    [SerializeField] private bool isEasy = true;
+    [SerializeField] private int boardSize;
 
     private GameObject selectedPiece;
     private GameObject selectedParentBlock;
-    public int Score;
+    private bool isGameOver = false;
     private Graph g;
     private List<HashSet<int>> resblocks;
 
@@ -21,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        g = new Graph(16);
+        g = new Graph(boardSize);
 
         g.addRandomWeigths();
 
@@ -30,14 +26,13 @@ public class GameManager : MonoBehaviour
         g.findTreeEdges();
 
         g.randomDeletion();
+
         int k = 0;
         for (int i = 0; i < g.listOfDeletedEdges.Count; i++)
         {
             g.blocks.Add(new HashSet<int>());
-            Debug.Log("***************");
             g.DFS_for_tree(g.listOfDeletedEdges[i].vertexId1, k);
             g.blocks.Add(new HashSet<int>());
-            Debug.Log("***************");
             g.DFS_for_tree(g.listOfDeletedEdges[i].vertexId2, k+1);
             k += 2;
         }
@@ -55,8 +50,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        Debug.Log("***************");
-
         mergedBlocks = new List<GameObject>();
 
         for (int i = 0; i < resblocks.Count; i++)
@@ -64,7 +57,6 @@ public class GameManager : MonoBehaviour
             mergedBlocks.Add(new GameObject("piece"+i));
             foreach (var v in resblocks[i])
             {
-                Debug.Log(v);
                 GameObject.Find(v.ToString()).transform.SetParent(GameObject.Find("piece"+i).transform);
             }
             GameObject block = GameObject.Find("piece" + i);

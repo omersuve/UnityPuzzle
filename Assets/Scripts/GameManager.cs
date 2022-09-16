@@ -3,19 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private int _width = 6;
     [SerializeField] private int _height = 6;
-    [SerializeField] private Node _nodePrefab;
     [SerializeField] private bool isEasy = true;
 
     private GameObject selectedPiece;
     private GameObject selectedParentBlock;
     public int Score;
     private Graph g;
-    private List<Edge> resultedListEdges;
     private List<HashSet<int>> resblocks;
 
     List<GameObject> mergedBlocks;
@@ -70,6 +69,13 @@ public class GameManager : MonoBehaviour
             }
             GameObject block = GameObject.Find("piece" + i);
             block.tag = i.ToString();
+            block.AddComponent<Block>();
+            SpriteRenderer[] childs = block.GetComponentsInChildren<SpriteRenderer>();
+            Color c = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+            foreach (SpriteRenderer child in childs)
+            {
+                child.material.color = c;
+            }
         }
     }
 
@@ -79,12 +85,18 @@ public class GameManager : MonoBehaviour
         {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             Debug.Log(hit);
-            if (hit.transform.CompareTag("Piece"))
+            try
             {
-                Debug.Log("girdi");
-                selectedPiece = hit.transform.gameObject;
-                Transform temp = selectedPiece.transform.parent;
-                selectedParentBlock = GameObject.FindGameObjectWithTag(temp.tag);
+                if (hit.transform.CompareTag("Piece"))
+                {
+                    Debug.Log("girdi");
+                    selectedPiece = hit.transform.gameObject;
+                    Transform temp = selectedPiece.transform.parent;
+                    selectedParentBlock = GameObject.FindGameObjectWithTag(temp.tag);
+                }
+            }
+            catch (NullReferenceException ex)
+            {
             }
         }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool isEasy = true;
 
     private GameObject selectedPiece;
+    private GameObject selectedParentBlock;
     public int Score;
     private Graph g;
     private List<Edge> resultedListEdges;
     private List<HashSet<int>> resblocks;
+
+    List<GameObject> mergedBlocks;
 
     void Start()
     {
@@ -52,13 +56,19 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        Debug.Log(resblocks.ToString());
+        Debug.Log("***************");
 
-        //my_hashset.SetEquals(other);
+        mergedBlocks = new List<GameObject>();
 
-        //GenerateGrid();
-        //DrawUpwards(Color.red);
-        //DrawRight(Color.cyan);
+        for (int i = 0; i < resblocks.Count; i++)
+        {
+            mergedBlocks.Add(new GameObject("piece"+i));
+            foreach (var v in resblocks[i])
+            {
+                Debug.Log(v);
+                GameObject.Find(v.ToString()).transform.SetParent(GameObject.Find("piece"+i).transform);
+            }
+        }
     }
 
     private void Update()
@@ -69,6 +79,7 @@ public class GameManager : MonoBehaviour
             if (hit.transform.CompareTag("Piece"))
             {
                 selectedPiece = hit.transform.gameObject;
+                selectedParentBlock = selectedPiece.GetComponentInParent<GameObject>();
             }
         }
 
@@ -81,92 +92,6 @@ public class GameManager : MonoBehaviour
         {
             Vector3 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             selectedPiece.transform.position = new Vector3(mousePoint.x, mousePoint.y, 0);
-        }
-    }
-
-    void GenerateGrid()
-    {
-        for(int i = 0; i < _width; i++)
-        {
-            for(int j = 0; j < _height; j++)
-            {
-               
-            }
-        }
-    }
-
-    void DrawLine(Vector2 start, Vector2 end, Color color, float duration = 15f)
-    {
-        GameObject myLine = new GameObject();
-        myLine.transform.position = start;
-        myLine.AddComponent<LineRenderer>();
-        LineRenderer lr = myLine.GetComponent<LineRenderer>();
-        lr.startColor = color;
-        lr.endColor = color;
-        lr.startWidth = 0.05f;
-        lr.endWidth = 0.05f;
-        lr.SetPosition(0, start);
-        lr.SetPosition(1, end);
-        //GameObject.Destroy(myLine, duration);
-    }
-
-
-    void DrawUpwards(Color color)
-    {
-        int valY = 0;
-        int valX = Random.Range(0, _width / 2 + 1) * 2;
-        var initPositionX = new Vector2(valX, valY);
-        while (valY < _height)
-        {
-            initPositionX = new Vector2((float)(valX - 0.5), (float)(valY - 0.5));
-
-            if (valX == 0)
-            {
-                valX = Random.Range(0, 2) * 2;
-            }
-            else if (valX == _width)
-            {
-                valX = Random.Range(_width / 2 - 1, _width / 2 + 1) * 2;
-            }
-            else
-            {
-                valX = Random.Range(valX / 2 - 1, valX / 2 + 2) * 2;
-            }
-
-
-            valY += 2;
-
-            var targetPosition1 = new Vector2((float)(valX - 0.5), (float)(valY - 0.5));
-            DrawLine(initPositionX, targetPosition1, color);
-        }
-    }
-
-    void DrawRight(Color color)
-    {
-        int valX = 0;
-        int valY = Random.Range(0, _height / 2 + 1) * 2;
-        var initPositionY = new Vector2(valX, valY);
-        while (valX < _width)
-        {
-            initPositionY = new Vector2((float)(valX - 0.5), (float)(valY - 0.5));
-
-            if (valY == 0)
-            {
-                valY = Random.Range(0, 2) * 2;
-            }
-            else if (valY == _height)
-            {
-                valY = Random.Range(_height / 2 - 1, _height / 2 + 1) * 2;
-            }
-            else
-            {
-                valY = Random.Range(valY / 2 - 1, valY / 2 + 2) * 2;
-            }
-
-            valX += 2;
-
-            var targetPosition2 = new Vector2((float)(valX - 0.5), (float)(valY - 0.5));
-            DrawLine(initPositionY, targetPosition2, color);
         }
     }
 

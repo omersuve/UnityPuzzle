@@ -24,6 +24,9 @@ public class Block : MonoBehaviour
         {
             transform.position = RightPos;
             isInRightPos = true;
+        }else
+        {
+            isInRightPos = false;
         }
         //if (Vector3.Distance(transform.position, loc) < 0.5f)
         //{

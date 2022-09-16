@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
+using Text = UnityEngine.UI.Text;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,14 +11,20 @@ public class GameManager : MonoBehaviour
 
     private GameObject selectedPiece;
     private GameObject selectedParentBlock;
-    private bool isGameOver = false;
+    private bool isGameOver;
     private Graph g;
     private List<HashSet<int>> resblocks;
+    private List<GameObject> blocks;
+    public Text endText;
 
     List<GameObject> mergedBlocks;
 
     void Start()
     {
+        endText.enabled = false;
+
+        blocks = new List<GameObject>();
+
         g = new Graph(boardSize);
 
         g.addRandomWeigths();
@@ -62,8 +70,11 @@ public class GameManager : MonoBehaviour
             GameObject block = GameObject.Find("piece" + i);
             block.tag = i.ToString();
             block.AddComponent<Block>();
+            blocks.Add(block);
+            
             SpriteRenderer[] childs = block.GetComponentsInChildren<SpriteRenderer>();
             Color c = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+
             foreach (SpriteRenderer child in childs)
             {
                 child.material.color = c;
@@ -103,6 +114,12 @@ public class GameManager : MonoBehaviour
             Vector3 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             selectedParentBlock.transform.position = new Vector3(mousePoint.x, mousePoint.y, 0);
         }
+
+        isGameOver = CheckGameOver();
+        if (isGameOver)
+        {
+            SceneManager.LoadScene(1);
+        }
     }
 
     private List<HashSet<int>> CopyList(List<HashSet<int>> l)
@@ -111,6 +128,17 @@ public class GameManager : MonoBehaviour
         foreach (HashSet<int> l2 in l)
         {
             res.Add(l2);
+        }
+        return res;
+    }
+
+    private bool CheckGameOver()
+    {
+        bool res = true;
+        foreach (GameObject block in blocks)
+        {
+            if (!block.GetComponent<Block>().isInRightPos)
+                res = false;
         }
         return res;
     }

@@ -105,7 +105,6 @@ public class Graph
     {
         // current node is visited 
         visited[v] = true;
-        Debug.LogFormat(v + " ");
 
         LinkedList<int>.Enumerator iter = adj_list[v].GetEnumerator();
         while (iter.MoveNext())
@@ -129,7 +128,6 @@ public class Graph
     void DFS_helper_for_tree(int v, bool[] visited, int idx)
     {
         visited[v] = true;
-        Debug.LogFormat(v + " ");
         blocks[idx].Add(v);
 
         LinkedList<int>.Enumerator iter = tree_adj_list[v].GetEnumerator();
@@ -168,7 +166,7 @@ public class Graph
     {
         while(randomDelete > 0)
         {
-            int temp = UnityEngine.Random.Range(0, treeEdges.Count);
+            int temp = Random.Range(0, treeEdges.Count);
             if (!randomIdx.Contains(temp))
             {
                 randomIdx.Add(temp);

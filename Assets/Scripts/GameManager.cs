@@ -106,23 +106,19 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-            try
+            if (hit.transform.CompareTag("Piece"))
             {
-                if (hit.transform.CompareTag("Piece"))
-                {
-                    selectedPiece = hit.transform.gameObject;
-                    Transform temp = selectedPiece.transform.parent;
-                    selectedParentBlock = GameObject.FindGameObjectWithTag(temp.tag);
-                    offset = (Vector2)(hit.transform.position - selectedParentBlock.transform.position);
-                }
-            }
-            catch (NullReferenceException ex)
-            {
+                selectedPiece = hit.transform.gameObject;
+                Transform temp = selectedPiece.transform.parent;
+                selectedParentBlock = GameObject.FindGameObjectWithTag(temp.tag);
+                selectedParentBlock.GetComponent<Block>().selected = true;
+                offset = (Vector2)(hit.transform.position - selectedParentBlock.transform.position);
             }
         }
 
         if (Input.GetMouseButtonUp(0))
         {
+            selectedParentBlock.GetComponent<Block>().selected = false;
             selectedPiece = null;
             selectedParentBlock = null;
         }

@@ -167,6 +167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardSize: 16
+  board: {fileID: 1309913547}
+  triangles: {fileID: 1797583719}
   p0: {fileID: 1098253388}
   p1: {fileID: 1921858685}
   p2: {fileID: 1619289402}
@@ -1734,7 +1736,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 6c097f9c520e0a34f937b099e7c78e78, type: 3}
-  m_Color: {r: 0.5943396, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

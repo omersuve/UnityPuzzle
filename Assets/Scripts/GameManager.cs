@@ -1,13 +1,18 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.GraphicsBuffer;
 using Random = UnityEngine.Random;
 using Text = UnityEngine.UI.Text;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private int boardSize;
+
+    [SerializeField] private GameObject board;
+    [SerializeField] private GameObject triangles;
 
     [SerializeField] private GameObject p0;
     [SerializeField] private GameObject p1;
@@ -29,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     private GameObject selectedPiece;
     private GameObject selectedParentBlock;
-    private bool isGameOver;
+    private bool isGameOver = false;
     private Graph g;
     private List<HashSet<int>> resblocks;
     private List<GameObject> blocks;
@@ -106,6 +111,8 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+            if (hit.transform == null)
+                return;
             if (hit.transform.CompareTag("Piece"))
             {
                 selectedPiece = hit.transform.gameObject;
@@ -118,6 +125,8 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            if (selectedParentBlock == null)
+                return;
             selectedParentBlock.GetComponent<Block>().selected = false;
             selectedPiece = null;
             selectedParentBlock = null;

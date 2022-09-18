@@ -2011,6 +2011,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardSize: 36
+  board: {fileID: 1046940353}
+  triangles: {fileID: 844855222}
+  p0: {fileID: 0}
+  p1: {fileID: 0}
+  p2: {fileID: 0}
+  p3: {fileID: 0}
+  p4: {fileID: 0}
+  p5: {fileID: 0}
+  p6: {fileID: 0}
+  p7: {fileID: 0}
+  p8: {fileID: 0}
+  p9: {fileID: 0}
+  p10: {fileID: 0}
+  p11: {fileID: 0}
+  p12: {fileID: 0}
+  p13: {fileID: 0}
+  p14: {fileID: 0}
+  p15: {fileID: 0}
   endText: {fileID: 1538786256}
 --- !u!1 &911851572
 GameObject:
@@ -2522,7 +2540,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 6c097f9c520e0a34f937b099e7c78e78, type: 3}
-  m_Color: {r: 0.5943396, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2540,7 +2558,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1046940353}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.85, y: 0, z: 4}
+  m_LocalPosition: {x: -3.85, y: 0, z: 20}
   m_LocalScale: {x: 8, y: 8, z: 8}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3680,7 +3698,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1538786255
 RectTransform:
   m_ObjectHideFlags: 0

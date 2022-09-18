@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Block : MonoBehaviour
 {
@@ -7,51 +8,122 @@ public class Block : MonoBehaviour
     public bool isInRightPos = false;
     public List<Vector3> locations;
     public bool selected;
+    private float blockSize;
     void Start()
     {
         RightPos = transform.position;
-        transform.position = new Vector3 (Random.Range(6f,8f), Random.Range(-2f, 2f));
-        //GameObject[] pieceList = GameObject.FindGameObjectsWithTag("Piece");
-        //foreach (GameObject piece in pieceList)
-        //{
-        //    locations.Add(piece.transform.position);
-        //    piece.AddComponent<Piece>();
-        //}
+        transform.position = new Vector3 (Random.Range(7f,8f), Random.Range(-2f, 2f));
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+            blockSize = 1.33333f;
+        else
+            blockSize = 2f;
     }
 
     void Update()
     {
-        Debug.Log(RightPos);
-        Debug.Log(transform.position);
         if (!selected)
         {
-            if (Vector3.Distance(transform.position, Vector3.zero) < 0.5f)
+            if(Vector3.Distance(transform.position, RightPos) < 1f)
+            {
+                transform.position = RightPos;
+                isInRightPos = true;
+            }
+            else
+                isInRightPos = false;    
+            if (Vector3.Distance(transform.position, Vector3.zero) < 1f)
                 transform.position = Vector3.zero;
-                //isInRightPos = true;
-            else if (Vector3.Distance(transform.position, Vector3.zero + new Vector3(2, 2, 0)) < 0.5f)
-                transform.position = Vector3.zero + new Vector3(2, 2, 0);
-            else if (Vector3.Distance(transform.position, Vector3.zero + new Vector3(4, 4, 0)) < 0.5f)
-                transform.position = Vector3.zero + new Vector3(4, 4, 0);
-            else if (Vector3.Distance(transform.position, Vector3.zero + new Vector3(-4, -4, 0)) < 0.5f)
-                transform.position = Vector3.zero + new Vector3(-4, -4, 0);
-            else if (Vector3.Distance(transform.position, Vector3.zero + new Vector3(-2, -2, 0)) < 0.5f)
-                transform.position = Vector3.zero + new Vector3(-2, -2, 0);
-            else if (Vector3.Distance(transform.position, Vector3.zero + new Vector3(-4, -2, 0)) < 0.5f)
-                transform.position = Vector3.zero + new Vector3(-4, -2, 0);
-            else if (Vector3.Distance(transform.position, Vector3.zero + new Vector3(0, -4, 0)) < 0.5f)
-                transform.position = Vector3.zero + new Vector3(0, -4, 0);
-            else if (Vector3.Distance(transform.position, Vector3.zero + new Vector3(-2, -4, 0)) < 0.5f)
-                transform.position = Vector3.zero + new Vector3(-2, -4, 0);
-            else if (Vector3.Distance(transform.position, Vector3.zero + new Vector3(4, 0, 0)) < 0.5f)
-                transform.position = Vector3.zero + new Vector3(4, 0, 0);
-            else if (Vector3.Distance(transform.position, Vector3.zero + new Vector3(0, 2, 0)) < 0.5f)
-                transform.position = Vector3.zero + new Vector3(0, 2, 0);
-            else if (Vector3.Distance(transform.position, Vector3.zero + new Vector3(-4, 2, 0)) < 0.5f)
-                transform.position = Vector3.zero + new Vector3(-4, 2, 0);
-            else if (Vector3.Distance(transform.position, Vector3.zero + new Vector3(2, 0, 0)) < 0.5f)
-                transform.position = Vector3.zero + new Vector3(2, 0, 0);
-            else if (Vector3.Distance(transform.position, Vector3.zero + new Vector3(0, -6, 0)) < 0.5f)
-                transform.position = Vector3.zero + new Vector3(0, -6, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(blockSize, blockSize, 0)) < 1f)
+                transform.position =new Vector3(blockSize, blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(2*blockSize, 2*blockSize, 0)) < 1f)
+                transform.position =new Vector3(2*blockSize, 2*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-2*blockSize, -2*blockSize, 0)) < 1f)
+                transform.position =new Vector3(-2*blockSize, -2*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-blockSize, -blockSize, 0)) < 1f)
+                transform.position =new Vector3(-blockSize, -blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-2*blockSize, -blockSize, 0)) < 1f)
+                transform.position =new Vector3(-2*blockSize, -blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(0, -2*blockSize, 0)) < 1f)
+                transform.position =new Vector3(0, -2*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-blockSize, -2*blockSize, 0)) < 1f)
+                transform.position =new Vector3(-blockSize, -2*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(2*blockSize, 0, 0)) < 1f)
+                transform.position =new Vector3(2*blockSize, 0, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(0, blockSize, 0)) < 1f)
+                transform.position =new Vector3(0, blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(2*blockSize, blockSize, 0)) < 1f)
+                transform.position =new Vector3(2*blockSize, blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(blockSize, 2*blockSize, 0)) < 1f)
+                transform.position =new Vector3(blockSize, 2*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(0, -3*blockSize, 0)) < 1f)
+                transform.position =new Vector3(0, -3*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-2*blockSize, blockSize, 0)) < 1f)
+                transform.position =new Vector3(-2*blockSize, blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(blockSize, 0, 0)) < 1f)
+                transform.position =new Vector3(blockSize, 0, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(3*blockSize, 0, 0)) < 1f)
+                transform.position =new Vector3(3*blockSize, 0, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-blockSize, blockSize, 0)) < 1f)
+                transform.position =new Vector3(-blockSize, blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(blockSize, -blockSize, 0)) < 1f)
+                transform.position =new Vector3(blockSize, -blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(2*blockSize, -2*blockSize, 0)) < 1f)
+                transform.position =new Vector3(2*blockSize, -2*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(blockSize, -2*blockSize, 0)) < 1f)
+                transform.position =new Vector3(blockSize, -2*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(0, 2*blockSize, 0)) < 1f)
+                transform.position =new Vector3(0, 2*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-blockSize, 0, 0)) < 1f)
+                transform.position =new Vector3(-blockSize, 0, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(2*blockSize, -blockSize, 0)) < 1f)
+                transform.position =new Vector3(2*blockSize, -blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(0, -blockSize, 0)) < 1f)
+                transform.position =new Vector3(0, -blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-2*blockSize, 0, 0)) < 1f)
+                transform.position =new Vector3(-2*blockSize, 0, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(3*blockSize, -2*blockSize, 0)) < 1f)
+                transform.position =new Vector3(3*blockSize, -2*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(3*blockSize, -blockSize, 0)) < 1f)
+                transform.position =new Vector3(3*blockSize, -blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(blockSize, -3*blockSize, 0)) < 1f)
+                transform.position =new Vector3(blockSize, -3*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(2*blockSize, -3*blockSize, 0)) < 1f)
+                transform.position =new Vector3(2*blockSize, -3*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(3*blockSize, -3*blockSize, 0)) < 1f)
+                transform.position =new Vector3(3*blockSize, -3*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(3*blockSize, blockSize, 0)) < 1f)
+                transform.position =new Vector3(3*blockSize, blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-3*blockSize, blockSize, 0)) < 1f)
+                transform.position =new Vector3(-3*blockSize, blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-3*blockSize, -2*blockSize, 0)) < 1f)
+                transform.position =new Vector3(-3*blockSize, -2*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-3*blockSize, -blockSize, 0)) < 1f)
+                transform.position =new Vector3(-3*blockSize, -blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-3*blockSize, 0, 0)) < 1f)
+                transform.position =new Vector3(-3*blockSize, 0, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-blockSize, -3*blockSize, 0)) < 1f)
+                transform.position =new Vector3(-blockSize, -3*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-2*blockSize, -3*blockSize, 0)) < 1f)
+                transform.position =new Vector3(-2*blockSize, -3*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-3*blockSize, -3*blockSize, 0)) < 1f)
+                transform.position =new Vector3(-3*blockSize, -3*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-2*blockSize, 3*blockSize, 0)) < 1f)
+                transform.position =new Vector3(-2*blockSize, 3*blockSize, 0);
+            else if (Vector3.Distance(transform.position,new Vector3(-blockSize, 3*blockSize, 0)) < 1f)
+                transform.position =new Vector3(-blockSize, 3*blockSize, 0);
+            else if (Vector3.Distance(transform.position, new Vector3(2*blockSize, 4*blockSize, 0)) < 1f)
+                transform.position = new Vector3(2*blockSize, 4 * blockSize, 0);
+            else if (Vector3.Distance(transform.position, new Vector3(-4 * blockSize, 0, 0)) < 1f)
+                transform.position = new Vector3(-4*blockSize, 0, 0);
+            else if (Vector3.Distance(transform.position, new Vector3(4 * blockSize, 0, 0)) < 1f)
+                transform.position = new Vector3(4 * blockSize, 0, 0);
+            else if (Vector3.Distance(transform.position, new Vector3(-4 * blockSize, -2 * blockSize, 0)) < 1f)
+                transform.position = new Vector3(-4 * blockSize, -2*blockSize, 0);
+            else if (Vector3.Distance(transform.position, new Vector3(2 * blockSize, -4 * blockSize, 0)) < 1f)
+                transform.position = new Vector3(2 * blockSize, -4 * blockSize, 0);
+            else if (Vector3.Distance(transform.position, new Vector3(-2 * blockSize, 2 * blockSize, 0)) < 1f)
+                transform.position = new Vector3(-2 * blockSize, 2 * blockSize, 0);
+            else if (Vector3.Distance(transform.position, new Vector3(blockSize, -4 * blockSize, 0)) < 1f)
+                transform.position = new Vector3(blockSize, -4 * blockSize, 0);
             else
             {
             }

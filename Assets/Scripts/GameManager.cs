@@ -9,6 +9,24 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private int boardSize;
 
+    [SerializeField] private GameObject p0;
+    [SerializeField] private GameObject p1;
+    [SerializeField] private GameObject p2;
+    [SerializeField] private GameObject p3;
+    [SerializeField] private GameObject p4;
+    [SerializeField] private GameObject p5;
+    [SerializeField] private GameObject p6;
+    [SerializeField] private GameObject p7;
+    [SerializeField] private GameObject p8;
+    [SerializeField] private GameObject p9;
+    [SerializeField] private GameObject p10;
+    [SerializeField] private GameObject p11;
+    [SerializeField] private GameObject p12;
+    [SerializeField] private GameObject p13;
+    [SerializeField] private GameObject p14;
+    [SerializeField] private GameObject p15;
+
+
     private GameObject selectedPiece;
     private GameObject selectedParentBlock;
     private bool isGameOver;
@@ -16,6 +34,7 @@ public class GameManager : MonoBehaviour
     private List<HashSet<int>> resblocks;
     private List<GameObject> blocks;
     public Text endText;
+    Vector2 offset = Vector2.zero;
 
     List<GameObject> mergedBlocks;
 
@@ -94,6 +113,7 @@ public class GameManager : MonoBehaviour
                     selectedPiece = hit.transform.gameObject;
                     Transform temp = selectedPiece.transform.parent;
                     selectedParentBlock = GameObject.FindGameObjectWithTag(temp.tag);
+                    offset = (Vector2)(hit.transform.position - selectedParentBlock.transform.position);
                 }
             }
             catch (NullReferenceException ex)
@@ -110,7 +130,7 @@ public class GameManager : MonoBehaviour
         if(selectedParentBlock != null)
         {
             Vector3 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            selectedParentBlock.transform.position = new Vector3(mousePoint.x, mousePoint.y, 0);
+            selectedParentBlock.transform.position = new Vector3(mousePoint.x, mousePoint.y, 0) - new Vector3(offset.x, offset.y, 0);
         }
 
         isGameOver = CheckGameOver();

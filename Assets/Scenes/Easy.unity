@@ -167,6 +167,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardSize: 16
+  p0: {fileID: 1098253388}
+  p1: {fileID: 1921858685}
+  p2: {fileID: 1619289402}
+  p3: {fileID: 1308537740}
+  p4: {fileID: 870103775}
+  p5: {fileID: 370822396}
+  p6: {fileID: 401617813}
+  p7: {fileID: 1178911078}
+  p8: {fileID: 555517501}
+  p9: {fileID: 972796695}
+  p10: {fileID: 1458983986}
+  p11: {fileID: 1815845195}
+  p12: {fileID: 833678691}
+  p13: {fileID: 2138759884}
+  p14: {fileID: 863290052}
+  p15: {fileID: 1091714873}
   endText: {fileID: 2120495063}
 --- !u!1 &370822396
 GameObject:

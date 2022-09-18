@@ -20,9 +20,10 @@ public class Block : MonoBehaviour
 
     void Update()
     {
-        if(Vector3.Distance(transform.position, RightPos) < 0.5f)
+        Debug.Log(RightPos);
+        Debug.Log(transform.position);
+        if (Vector3.Distance(transform.position, RightPos) < 0.5f)
         {
-            transform.position = RightPos;
             isInRightPos = true;
         }else
         {

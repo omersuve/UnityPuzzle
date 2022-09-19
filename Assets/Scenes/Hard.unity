@@ -539,7 +539,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 127813059}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1992,7 +1992,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 899458790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.36030346, y: -0.092976876, z: -17.821308}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2013,22 +2013,42 @@ MonoBehaviour:
   boardSize: 36
   board: {fileID: 1046940353}
   triangles: {fileID: 844855222}
-  p0: {fileID: 0}
-  p1: {fileID: 0}
-  p2: {fileID: 0}
-  p3: {fileID: 0}
-  p4: {fileID: 0}
-  p5: {fileID: 0}
-  p6: {fileID: 0}
-  p7: {fileID: 0}
-  p8: {fileID: 0}
-  p9: {fileID: 0}
-  p10: {fileID: 0}
-  p11: {fileID: 0}
-  p12: {fileID: 0}
-  p13: {fileID: 0}
-  p14: {fileID: 0}
-  p15: {fileID: 0}
+  p0: {fileID: 1606701245}
+  p1: {fileID: 375171799}
+  p2: {fileID: 97595321}
+  p3: {fileID: 1271052477}
+  p4: {fileID: 973510581}
+  p5: {fileID: 223025548}
+  p6: {fileID: 782108289}
+  p7: {fileID: 881602410}
+  p8: {fileID: 957164057}
+  p9: {fileID: 888901352}
+  p10: {fileID: 1050283004}
+  p11: {fileID: 669249454}
+  p12: {fileID: 1988256542}
+  p13: {fileID: 234326097}
+  p14: {fileID: 1838045271}
+  p15: {fileID: 1015367054}
+  p16: {fileID: 120994920}
+  p17: {fileID: 1992356457}
+  p18: {fileID: 781981624}
+  p19: {fileID: 498690009}
+  p20: {fileID: 266219456}
+  p21: {fileID: 1244257329}
+  p22: {fileID: 1739778561}
+  p23: {fileID: 2097868729}
+  p24: {fileID: 1452683378}
+  p25: {fileID: 106824179}
+  p26: {fileID: 911851572}
+  p27: {fileID: 1329740653}
+  p28: {fileID: 1322105361}
+  p29: {fileID: 1140733021}
+  p30: {fileID: 731085412}
+  p31: {fileID: 1316632291}
+  p32: {fileID: 760880086}
+  p33: {fileID: 1672471825}
+  p34: {fileID: 1797745009}
+  p35: {fileID: 1405967331}
   endText: {fileID: 1538786256}
 --- !u!1 &911851572
 GameObject:
@@ -2558,7 +2578,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1046940353}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.85, y: 0, z: 20}
+  m_LocalPosition: {x: -3.85, y: 0, z: 0}
   m_LocalScale: {x: 8, y: 8, z: 8}
   m_Children: []
   m_Father: {fileID: 0}

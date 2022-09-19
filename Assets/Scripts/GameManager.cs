@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEngine.GraphicsBuffer;
 using Random = UnityEngine.Random;
-using Text = UnityEngine.UI.Text;
 
 public class GameManager : MonoBehaviour
 {
@@ -60,7 +57,6 @@ public class GameManager : MonoBehaviour
     private List<GameObject> blocks;
     Vector2 offset = Vector2.zero;
     Dictionary<Vector2, bool> truePositions;
-    private Vector3 selectedParentTransform;
 
     List<GameObject> mergedBlocks;
 

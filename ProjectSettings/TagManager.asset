@@ -16,16 +16,23 @@ TagManager:
   - 7
   - 8
   - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Board
+  - 
   - Water
   - UI
+  - Selected
   - Piece
-  - 
-  - 
+  - Board
   - 
   - 
   - 
@@ -58,4 +65,10 @@ TagManager:
     locked: 0
   - name: Piece
     uniqueID: 3309338615
+    locked: 0
+  - name: Selected
+    uniqueID: 2016890149
+    locked: 0
+  - name: Unselected
+    uniqueID: 2133297661
     locked: 0

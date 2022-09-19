@@ -8,15 +8,25 @@ public class Block : MonoBehaviour
     public List<Vector2> locations;
     public bool selected;
     private float blockSize;
+    SpriteRenderer sr;
     void Start()
     {
         transform.position = new Vector3 (Random.Range(7f,8f), Random.Range(-2f, 2f));
         locations = new List<Vector2>();
-        
+        sr = gameObject.AddComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+
         if (SceneManager.GetActiveScene().buildIndex == 1)
             blockSize = 1.33333f;
         else
             blockSize = 2f;
+    }
+
+    private void Update()
+    {
+        if (selected)
+            sr.sortingLayerName = "Selected";
+        else
+            sr.sortingLayerName = "Unselected";
     }
 
     public void snap()
@@ -129,6 +139,16 @@ public class Block : MonoBehaviour
             transform.position = new Vector3(-4 * blockSize, 2 * blockSize, 0);
         else if (Vector3.Distance(transform.position, new Vector3(-4 * blockSize, -4 * blockSize, 0)) < 0.8f)
             transform.position = new Vector3(-4 * blockSize, -4 * blockSize, 0);
+        else if (Vector3.Distance(transform.position, new Vector3(4 * blockSize, 2 * blockSize, 0)) < 0.8f)
+            transform.position = new Vector3(4 * blockSize, 2 * blockSize, 0);
+        else if (Vector3.Distance(transform.position, new Vector3(4 * blockSize, -2 * blockSize, 0)) < 0.8f)
+            transform.position = new Vector3(4 * blockSize, -2 * blockSize, 0);
+        else if (Vector3.Distance(transform.position, new Vector3(4 * blockSize, 4 * blockSize, 0)) < 0.8f)
+            transform.position = new Vector3(4 * blockSize, 4 * blockSize, 0);
+        else if (Vector3.Distance(transform.position, new Vector3(0, -4 * blockSize, 0)) < 0.8f)
+            transform.position = new Vector3(0, -4 * blockSize, 0);
+        else if (Vector3.Distance(transform.position, new Vector3(4 * blockSize, -4 * blockSize, 0)) < 0.8f)
+            transform.position = new Vector3(4 * blockSize, -4 * blockSize, 0);
 
         if (GetComponentsInChildren<Transform>().Length > 1)
         {

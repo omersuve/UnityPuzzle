@@ -17,9 +17,10 @@ public class Graph
     public List<Edge> listOfDeletedEdges;
     public List<HashSet<int>> blocks;
 
-
-    public Graph(int v)
+    public Graph(int v, int minR, int maxR)
     {
+        GameVariables.minRandom += minR;
+        GameVariables.maxRandom += maxR;
         vertices = v;
         adj_list = new List<LinkedList<int>>();
         tree_adj_list = new List<LinkedList<int>>();
@@ -38,7 +39,7 @@ public class Graph
         {
             vertexList.Add(i);
         }
-        randomDelete = Random.Range(6, 9);
+        randomDelete = Random.Range(GameVariables.minRandom, GameVariables.maxRandom);
         randomIdx = new List<int>();
         blocks = new List<HashSet<int>>();
     }

@@ -58,16 +58,14 @@ public class GameManager : MonoBehaviour
     private Graph g;
     private List<HashSet<int>> resblocks;
     private List<GameObject> blocks;
-    public Text endText;
     Vector2 offset = Vector2.zero;
     Dictionary<Vector2, bool> truePositions;
+    private Vector3 selectedParentTransform;
 
     List<GameObject> mergedBlocks;
 
     void Start()
     {
-        endText.enabled = false;
-
         truePositions = new Dictionary<Vector2, bool>();
 
         if(SceneManager.GetActiveScene().buildIndex == 1)
@@ -75,12 +73,9 @@ public class GameManager : MonoBehaviour
         else
             addTruePositionsEasy();
 
-        //foreach (Vector2 i in truePositions.Keys)
-        //    Debug.Log(i);
-
         blocks = new List<GameObject>();
 
-        g = new Graph(boardSize);
+        g = new Graph(boardSize, 1, 1);
 
         g.addRandomWeigths();
 
@@ -107,9 +102,7 @@ public class GameManager : MonoBehaviour
             for(int j = i+1; j < g.blocks.Count; j++)
             {
                 if (g.blocks[i].SetEquals(g.blocks[j]))
-                {
                     resblocks.Remove(g.blocks[i]);
-                }
             }
         }
 
@@ -119,9 +112,7 @@ public class GameManager : MonoBehaviour
         {
             mergedBlocks.Add(new GameObject("piece"+i));
             foreach (var v in resblocks[i])
-            {
                 GameObject.Find(v.ToString()).transform.SetParent(GameObject.Find("piece"+i).transform);
-            }
             GameObject block = GameObject.Find("piece" + i);
             block.tag = i.ToString();
             block.AddComponent<Block>();
@@ -131,17 +122,12 @@ public class GameManager : MonoBehaviour
             Color c = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
 
             foreach (SpriteRenderer child in childs)
-            {
                 child.material.color = c;
-            }
         }
     }
 
     private void Update()
     {
-        //foreach (Vector2 key in truePositions.Keys)
-            //Debug.Log(truePositions[key].ToString());
-
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
@@ -154,16 +140,8 @@ public class GameManager : MonoBehaviour
                 selectedParentBlock = GameObject.FindGameObjectWithTag(temp.tag);
                 selectedParentBlock.GetComponent<Block>().selected = true;
                 offset = (Vector2)(hit.transform.position - selectedParentBlock.transform.position);
+                changePositionWhenDrag(selectedParentBlock);
             }
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            if (selectedParentBlock == null)
-                return;
-            selectedParentBlock.GetComponent<Block>().selected = false;
-            selectedPiece = null;
-            selectedParentBlock = null;
         }
 
         if(selectedParentBlock != null)
@@ -172,13 +150,23 @@ public class GameManager : MonoBehaviour
             selectedParentBlock.transform.position = new Vector3(mousePoint.x, mousePoint.y, 0) - new Vector3(offset.x, offset.y, 0);
         }
 
-        changePositions();
-
-        isGameOver = CheckGameOver();
-        if (isGameOver)
+        if (Input.GetMouseButtonUp(0))
         {
-            SceneManager.LoadScene(1, LoadSceneMode.Single);
+            if (selectedParentBlock == null)
+                return;
+            selectedParentBlock.GetComponent<Block>().snap();
+            changePositionWhenDrop(selectedParentBlock);
+            selectedParentBlock.GetComponent<Block>().selected = false;
+            selectedPiece = null;
+            selectedParentBlock = null;
         }
+
+        if (isGameOver && GameVariables.sameBoardCount>0)
+        {
+            GameVariables.sameBoardCount--;
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
+        }else if(isGameOver && GameVariables.sameBoardCount <= 0)
+            SceneManager.LoadScene(1, LoadSceneMode.Single);
     }
 
     private List<HashSet<int>> CopyList(List<HashSet<int>> l)
@@ -191,31 +179,52 @@ public class GameManager : MonoBehaviour
         return res;
     }
 
-    private void changePositions()
+    public void changePositionWhenDrop(GameObject selectedParentBlock)
     {
-        foreach (GameObject block in blocks)
+        Debug.Log("Block name: " + selectedParentBlock.name);
+        Debug.Log("location count: " + selectedParentBlock.GetComponent<Block>().locations.Count);
+        foreach (Vector2 pos in selectedParentBlock.GetComponent<Block>().locations)
         {
-            //Debug.Log("Block name: " + block.name);
-            foreach (Vector3 pos in block.GetComponent<Block>().locations)
+            if (truePositions.ContainsKey(new Vector2((float)Math.Round(pos.x, 1), (float)Math.Round(pos.y, 1))))
             {
-                //Debug.Log((Vector2)pos);
-                if (truePositions.ContainsKey(new Vector2((float)Math.Round(pos.x, 1), (float)Math.Round(pos.y, 1))))
-                {
-                    truePositions[pos] = true;
-                    //Debug.Log("changed");
-                }
+                truePositions[new Vector2((float)Math.Round(pos.x, 1), (float)Math.Round(pos.y, 1))] = true;
+                Debug.Log("changed");
             }
         }
     }
 
-    private bool CheckGameOver()
+    public void changePositionWhenDrag(GameObject selectedParentBlock)
     {
-        foreach (Vector3 loc in truePositions.Keys)
+        Debug.Log("Block name: " + selectedParentBlock.name);
+        Debug.Log("location count: " + selectedParentBlock.GetComponent<Block>().locations.Count);
+        foreach (Vector2 pos in selectedParentBlock.GetComponent<Block>().locations)
+        {
+            if (truePositions.ContainsKey(new Vector2((float)Math.Round(pos.x, 1), (float)Math.Round(pos.y, 1))))
+            {
+                truePositions[new Vector2((float)Math.Round(pos.x, 1), (float)Math.Round(pos.y, 1))] = false;
+                Debug.Log("changed");
+            }
+        }
+    }
+
+    public void printTruePositionsDict()
+    {
+        foreach (Vector2 v in truePositions.Keys)
+            Debug.LogFormat(v + ": " + truePositions[v]);
+    }
+
+    public void CheckGameOver()
+    {
+        foreach (Vector2 loc in truePositions.Keys)
         {
             if (truePositions[loc] == false)
-                return false;
+            {
+                isGameOver = false;
+                return;
+            }
         }
-        return true;
+        isGameOver = true;
+        return;
     }
 
     private void addTruePositionsEasy()

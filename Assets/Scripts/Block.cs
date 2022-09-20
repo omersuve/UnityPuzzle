@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 public class Block : MonoBehaviour
 {
     public List<Vector2> locations;
-    public bool selected;
     public float blockSize;
     void Start()
     {

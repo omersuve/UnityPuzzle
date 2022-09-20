@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.PlayerSettings;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -173,7 +172,6 @@ public class GameManager : MonoBehaviour
                 Transform temp = selectedPiece.transform.parent;
                 selectedParentBlock = GameObject.Find(temp.name);
                 Debug.Log(selectedParentBlock.gameObject.name);
-                selectedParentBlock.GetComponent<Block>().selected = true;
                 offset = (Vector2)(hit.transform.position - selectedParentBlock.transform.position);
                 changePositionWhenDrag(selectedParentBlock);
             }
@@ -191,7 +189,6 @@ public class GameManager : MonoBehaviour
                 return;
             selectedParentBlock.GetComponent<Block>().snap();
             changePositionWhenDrop(selectedParentBlock);
-            selectedParentBlock.GetComponent<Block>().selected = false;
             selectedPiece = null;
             selectedParentBlock = null;
         }
@@ -264,6 +261,10 @@ public class GameManager : MonoBehaviour
             c.Content.Add(blockInScene);
         }
         LoadGameInfo.currentSavedContainer = c;
+        if (boardSize == 16)
+            LoadGameInfo.is4x4 = true;
+        else
+            LoadGameInfo.is4x4 = false;
         string json = c.SaveToString();
         File.WriteAllText(@"gamedata.json", json);
     }
@@ -279,7 +280,10 @@ public class GameManager : MonoBehaviour
             Debug.Log(fileContents);
             BlockContainer gameData = JsonUtility.FromJson<BlockContainer>(fileContents);
             LoadGameInfo.currentSavedContainer.Content = gameData.Content;
-            SceneManager.LoadScene(0);
+            if(LoadGameInfo.is4x4)
+                SceneManager.LoadScene(0);
+            else
+                SceneManager.LoadScene(1);
         }
     }
 

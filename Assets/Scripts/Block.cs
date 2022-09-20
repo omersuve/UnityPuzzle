@@ -6,16 +6,34 @@ public class Block : MonoBehaviour
 {
     public List<Vector2> locations;
     public bool selected;
-    private float blockSize;
+    public float blockSize;
     void Start()
     {
-        transform.position = new Vector3 (Random.Range(8f,9.5f), Random.Range(-1.6f, 1.6f));
+        if (!LoadGameInfo.isLoaded)
+            transform.position = new Vector3(Random.Range(8f, 9.5f), Random.Range(-1.6f, 1.6f));
+        
         locations = new List<Vector2>();
 
         if (SceneManager.GetActiveScene().buildIndex == 1)
             blockSize = 1.33333f;
         else
             blockSize = 2f;
+
+        if (GetComponentsInChildren<Transform>().Length > 1)
+        {
+            List<Vector2> tempLoc = new List<Vector2>();
+            int it = 0;
+            foreach (Transform child in GetComponentsInChildren<Transform>())
+            {
+                if (it == 0)
+                {
+                    it++;
+                    continue;
+                }
+                tempLoc.Add((Vector2)child.position);
+            }
+            locations = tempLoc;
+        }
     }
 
     public void snap()

@@ -7,7 +7,6 @@ using UnityEngine;
 public class BlockContainer
 {
     public List<BlockInScene> Content = new List<BlockInScene>();
-
     public string SaveToString()
     {
         return JsonUtility.ToJson(this);

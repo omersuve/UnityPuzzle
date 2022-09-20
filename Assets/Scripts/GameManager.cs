@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.PlayerSettings;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -69,6 +71,44 @@ public class GameManager : MonoBehaviour
 
         blocks = new List<GameObject>();
 
+        resblocks = new List<HashSet<int>>();
+
+        if (LoadGameInfo.isLoaded)
+        {
+            Debug.Log("loaded!");
+            mergedBlocks = new List<GameObject>();
+
+            List<BlockInScene> bis = LoadGameInfo.currentSavedContainer.Content;
+
+            for (int i = 0; i < bis.Count; i++)
+            {
+                mergedBlocks.Add(new GameObject(bis[i].name));
+                HashSet<int> pos = new HashSet<int>();
+                foreach (var v in bis[i].vertices)
+                {
+                    GameObject.Find(v.ToString()).transform.SetParent(GameObject.Find(bis[i].name).transform);
+                    pos.Add(v);
+                }
+                resblocks.Add(pos);
+
+                GameObject block = GameObject.Find(bis[i].name);
+                block.AddComponent<Block>();
+                blocks.Add(block);
+
+                SpriteRenderer[] childs = block.GetComponentsInChildren<SpriteRenderer>();
+                Color c = bis[i].color;
+
+                foreach (SpriteRenderer child in childs)
+                    child.material.color = c;
+
+                block.transform.position = bis[i].position;
+            }
+            LoadGameInfo.isLoaded = false;
+            return;
+        }
+
+        Debug.Log("not loaded!");
+
         g = new Graph(boardSize, 1, 1);
 
         g.addRandomWeigths();
@@ -131,7 +171,8 @@ public class GameManager : MonoBehaviour
             {
                 selectedPiece = hit.transform.gameObject;
                 Transform temp = selectedPiece.transform.parent;
-                selectedParentBlock = GameObject.FindGameObjectWithTag(temp.tag);
+                selectedParentBlock = GameObject.Find(temp.name);
+                Debug.Log(selectedParentBlock.gameObject.name);
                 selectedParentBlock.GetComponent<Block>().selected = true;
                 offset = (Vector2)(hit.transform.position - selectedParentBlock.transform.position);
                 changePositionWhenDrag(selectedParentBlock);
@@ -211,22 +252,34 @@ public class GameManager : MonoBehaviour
 
     public void StoreTheLevelJson()
     {
+        LoadGameInfo.isSaved = true;
         BlockContainer c = new BlockContainer();
-        foreach (GameObject b in blocks)
+        for (int bidx = 0; bidx < blocks.Count; bidx++)
         {
-            BlockInScene blockInScene = new BlockInScene(b.name, b.transform.localScale, b.transform.position, b.transform.rotation);
+            BlockInScene blockInScene = new BlockInScene(
+                blocks[bidx].name,
+                blocks[bidx].transform.position,
+                resblocks[bidx].ToList(),
+                blocks[bidx].GetComponentInChildren<SpriteRenderer>().material.color);
             c.Content.Add(blockInScene);
         }
+        LoadGameInfo.currentSavedContainer = c;
         string json = c.SaveToString();
         File.WriteAllText(@"gamedata.json", json);
     }
 
-    private void ReadTheLevelJson()
+    public void ReadTheLevelJson()
     {
-        if (File.Exists(@"gamedata.json"))
+        if (File.Exists(@"gamedata.json") && LoadGameInfo.isSaved)
         {
+            LoadGameInfo.isLoaded = true;
+            if (new FileInfo(@"gamedata.json").Length == 0)
+                return;
             string fileContents = File.ReadAllText(@"gamedata.json");
+            Debug.Log(fileContents);
             BlockContainer gameData = JsonUtility.FromJson<BlockContainer>(fileContents);
+            LoadGameInfo.currentSavedContainer.Content = gameData.Content;
+            SceneManager.LoadScene(0);
         }
     }
 

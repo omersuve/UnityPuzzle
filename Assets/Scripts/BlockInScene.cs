@@ -7,15 +7,15 @@ public class BlockInScene
 {
     public string name;
     public Vector3 position;
-    public Vector3 scale;
-    public Quaternion rotation;
+    public List<int> vertices;
+    public Color color;
 
-    public BlockInScene(string name, Vector3 position, Vector3 scale, Quaternion rotation)
+    public BlockInScene(string name, Vector3 position, List<int> vertices, Color color)
     {
         this.name = name;
         this.position = position;
-        this.scale = scale;
-        this.rotation = rotation;
+        this.vertices = vertices;
+        this.color = color;
     }
 }
 

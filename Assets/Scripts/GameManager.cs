@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -7,7 +8,6 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private int boardSize;
-
     [SerializeField] private GameObject board;
     [SerializeField] private GameObject triangles;
 
@@ -48,7 +48,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject p34;
     [SerializeField] private GameObject p35;
 
-
     private GameObject selectedPiece;
     private GameObject selectedParentBlock;
     private bool isGameOver = false;
@@ -57,7 +56,6 @@ public class GameManager : MonoBehaviour
     private List<GameObject> blocks;
     Vector2 offset = Vector2.zero;
     Dictionary<Vector2, bool> truePositions;
-
     List<GameObject> mergedBlocks;
 
     void Start()
@@ -169,37 +167,25 @@ public class GameManager : MonoBehaviour
     {
         List<HashSet<int>> res = new List<HashSet<int>>();
         foreach (HashSet<int> l2 in l)
-        {
             res.Add(l2);
-        }
         return res;
     }
 
     public void changePositionWhenDrop(GameObject selectedParentBlock)
     {
-        Debug.Log("Block name: " + selectedParentBlock.name);
-        Debug.Log("location count: " + selectedParentBlock.GetComponent<Block>().locations.Count);
         foreach (Vector2 pos in selectedParentBlock.GetComponent<Block>().locations)
         {
             if (truePositions.ContainsKey(new Vector2((float)Math.Round(pos.x, 1), (float)Math.Round(pos.y, 1))))
-            {
                 truePositions[new Vector2((float)Math.Round(pos.x, 1), (float)Math.Round(pos.y, 1))] = true;
-                Debug.Log("changed");
-            }
         }
     }
 
     public void changePositionWhenDrag(GameObject selectedParentBlock)
     {
-        Debug.Log("Block name: " + selectedParentBlock.name);
-        Debug.Log("location count: " + selectedParentBlock.GetComponent<Block>().locations.Count);
         foreach (Vector2 pos in selectedParentBlock.GetComponent<Block>().locations)
         {
             if (truePositions.ContainsKey(new Vector2((float)Math.Round(pos.x, 1), (float)Math.Round(pos.y, 1))))
-            {
                 truePositions[new Vector2((float)Math.Round(pos.x, 1), (float)Math.Round(pos.y, 1))] = false;
-                Debug.Log("changed");
-            }
         }
     }
 
@@ -221,6 +207,27 @@ public class GameManager : MonoBehaviour
         }
         isGameOver = true;
         return;
+    }
+
+    public void StoreTheLevelJson()
+    {
+        BlockContainer c = new BlockContainer();
+        foreach (GameObject b in blocks)
+        {
+            BlockInScene blockInScene = new BlockInScene(b.name, b.transform.localScale, b.transform.position, b.transform.rotation);
+            c.Content.Add(blockInScene);
+        }
+        string json = c.SaveToString();
+        File.WriteAllText(@"gamedata.json", json);
+    }
+
+    private void ReadTheLevelJson()
+    {
+        if (File.Exists(@"gamedata.json"))
+        {
+            string fileContents = File.ReadAllText(@"gamedata.json");
+            BlockContainer gameData = JsonUtility.FromJson<BlockContainer>(fileContents);
+        }
     }
 
     private void addTruePositionsEasy()

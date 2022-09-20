@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,25 +7,15 @@ public class Block : MonoBehaviour
     public List<Vector2> locations;
     public bool selected;
     private float blockSize;
-    SpriteRenderer sr;
     void Start()
     {
-        transform.position = new Vector3 (Random.Range(7f,8f), Random.Range(-2f, 2f));
+        transform.position = new Vector3 (Random.Range(8f,9.5f), Random.Range(-1.6f, 1.6f));
         locations = new List<Vector2>();
-        sr = gameObject.AddComponent(typeof(SpriteRenderer)) as SpriteRenderer;
 
         if (SceneManager.GetActiveScene().buildIndex == 1)
             blockSize = 1.33333f;
         else
             blockSize = 2f;
-    }
-
-    private void Update()
-    {
-        if (selected)
-            sr.sortingLayerName = "Selected";
-        else
-            sr.sortingLayerName = "Unselected";
     }
 
     public void snap()

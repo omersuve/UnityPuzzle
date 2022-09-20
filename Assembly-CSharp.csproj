@@ -61,6 +61,8 @@
     <Compile Include="Assets\Scripts\Graph.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GameVariables.cs" />
+    <Compile Include="Assets\Scripts\BlockInScene.cs" />
+    <Compile Include="Assets\Scripts\BlockContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Graph
 {
-
     public int vertices;
     public List<int> vertexList;
     public List<LinkedList<int>> adj_list;
@@ -46,7 +45,6 @@ public class Graph
 
     public void Kruskals_MST(List<Edge> edges, List<int> vertices)
     {
-        //making set
         List<List<int>> listSet = new List<List<int>>();
         foreach (int vertex in vertices)
         {
@@ -55,13 +53,10 @@ public class Graph
             listSet.Add(temp);
         }
 
-        //sorting the edges order by weight ascending
         var sortedEdge = edges.OrderBy(x => x.weight).ToList();
 
         foreach (Edge edge in sortedEdge)
         {
-            //adding edge to result if both vertices do not belong to same set
-            //both vertices in same set means it can have cycles in tree
             bool success = true;
             int idx1 = -2;
             int idx2 = -1;
@@ -82,13 +77,9 @@ public class Graph
                 if (found1 && found2)
                 {
                     if (idx1 == idx2)
-                    {
                         success = false;
-                    }
                     else
-                    {
                         success = true;
-                    }
                     break;
                 }
             }
@@ -104,7 +95,6 @@ public class Graph
 
     void DFS_helper(int v, bool[] visited)
     {
-        // current node is visited 
         visited[v] = true;
 
         LinkedList<int>.Enumerator iter = adj_list[v].GetEnumerator();
@@ -116,13 +106,9 @@ public class Graph
         }
     }
 
-
     public void DFS(int v)
     {
-        //initially none of the vertices are visited 
         bool[] visited = new bool[vertices];
-
-        // call recursive DFS_helper function for DFS technique 
         DFS_helper(v, visited);
     }
 
@@ -143,7 +129,6 @@ public class Graph
     public void DFS_for_tree(int v, int idx)
     {
         bool[] visited = new bool[vertices];
-
         DFS_helper_for_tree(v, visited, idx);
     }
 
@@ -161,7 +146,6 @@ public class Graph
         tree_adj_list[v1].AddLast(v2);
         tree_adj_list[v2].AddLast(v1);
     }
-
 
     public void randomDeletion()
     {
@@ -193,7 +177,6 @@ public class Graph
             }
         }
     }
-
 
     public void addRandomWeigths()
     {

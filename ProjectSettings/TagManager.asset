@@ -66,9 +66,9 @@ TagManager:
   - name: Piece
     uniqueID: 3309338615
     locked: 0
-  - name: Selected
-    uniqueID: 2016890149
-    locked: 0
   - name: Unselected
     uniqueID: 2133297661
+    locked: 0
+  - name: Selected
+    uniqueID: 2016890149
     locked: 0

@@ -149,6 +149,10 @@ public class Block : MonoBehaviour
             transform.position = new Vector3(0, -4 * blockSize, 0);
         else if (Vector3.Distance(transform.position, new Vector3(4 * blockSize, -4 * blockSize, 0)) < 0.8f)
             transform.position = new Vector3(4 * blockSize, -4 * blockSize, 0);
+        else if (Vector3.Distance(transform.position, new Vector3(-1 * blockSize, 5 * blockSize, 0)) < 0.8f)
+            transform.position = new Vector3(-1 * blockSize, 5 * blockSize, 0);
+        else if (Vector3.Distance(transform.position, new Vector3(1 * blockSize, 3 * blockSize, 0)) < 0.8f)
+            transform.position = new Vector3(1 * blockSize, 3 * blockSize, 0);
 
         if (GetComponentsInChildren<Transform>().Length > 1)
         {

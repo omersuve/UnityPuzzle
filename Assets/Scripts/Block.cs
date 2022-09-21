@@ -9,7 +9,7 @@ public class Block : MonoBehaviour
     void Start()
     {
         if (!LoadGameInfo.isLoaded)
-            transform.position = new Vector3(Random.Range(8f, 9.5f), Random.Range(-1.6f, 1.6f));
+            transform.position = new Vector3(Random.Range(3f, 9f), Random.Range(-3f, 3f));
         
         locations = new List<Vector2>();
 
@@ -35,6 +35,7 @@ public class Block : MonoBehaviour
         }
     }
 
+    // Snaps the selected block into the board if it is near to the proper locations
     public void snap()
     {
         if (Vector3.Distance(transform.position, Vector3.zero) < 0.8f)

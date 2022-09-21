@@ -74,7 +74,6 @@ public class GameManager : MonoBehaviour
 
         if (LoadGameInfo.isLoaded)
         {
-            Debug.Log("loaded!");
             mergedBlocks = new List<GameObject>();
 
             List<BlockInScene> bis = LoadGameInfo.currentSavedContainer.Content;
@@ -105,8 +104,6 @@ public class GameManager : MonoBehaviour
             LoadGameInfo.isLoaded = false;
             return;
         }
-
-        Debug.Log("not loaded!");
 
         g = new Graph(boardSize, 1, 1);
 
@@ -171,7 +168,6 @@ public class GameManager : MonoBehaviour
                 selectedPiece = hit.transform.gameObject;
                 Transform temp = selectedPiece.transform.parent;
                 selectedParentBlock = GameObject.Find(temp.name);
-                Debug.Log(selectedParentBlock.gameObject.name);
                 offset = (Vector2)(hit.transform.position - selectedParentBlock.transform.position);
                 changePositionWhenDrag(selectedParentBlock);
             }
@@ -201,6 +197,7 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(1, LoadSceneMode.Single);
     }
 
+    // Copies a list of integer valued HashSet into another one
     private List<HashSet<int>> CopyList(List<HashSet<int>> l)
     {
         List<HashSet<int>> res = new List<HashSet<int>>();
@@ -209,6 +206,7 @@ public class GameManager : MonoBehaviour
         return res;
     }
 
+    // Checks if truePosition is occupied by selected block after dropping
     public void changePositionWhenDrop(GameObject selectedParentBlock)
     {
         foreach (Vector2 pos in selectedParentBlock.GetComponent<Block>().locations)
@@ -218,6 +216,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Checks if truePosition is not occupied by selected block after dragging
     public void changePositionWhenDrag(GameObject selectedParentBlock)
     {
         foreach (Vector2 pos in selectedParentBlock.GetComponent<Block>().locations)
@@ -227,12 +226,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Printing status of TruePositions Dictionary for Debugging purposes
     public void printTruePositionsDict()
     {
         foreach (Vector2 v in truePositions.Keys)
             Debug.LogFormat(v + ": " + truePositions[v]);
     }
 
+    // Checks if the current Level is passed or not
     public void CheckGameOver()
     {
         foreach (Vector2 loc in truePositions.Keys)
@@ -247,6 +248,7 @@ public class GameManager : MonoBehaviour
         return;
     }
 
+    // Stores the current level into a json file named 'gamedata.json'
     public void StoreTheLevelJson()
     {
         LoadGameInfo.isSaved = true;
@@ -269,6 +271,7 @@ public class GameManager : MonoBehaviour
         File.WriteAllText(@"gamedata.json", json);
     }
 
+    // Loads the lastly stored level into the scene
     public void ReadTheLevelJson()
     {
         if (File.Exists(@"gamedata.json") && LoadGameInfo.isSaved)
@@ -277,7 +280,6 @@ public class GameManager : MonoBehaviour
             if (new FileInfo(@"gamedata.json").Length == 0)
                 return;
             string fileContents = File.ReadAllText(@"gamedata.json");
-            Debug.Log(fileContents);
             BlockContainer gameData = JsonUtility.FromJson<BlockContainer>(fileContents);
             LoadGameInfo.currentSavedContainer.Content = gameData.Content;
             if(LoadGameInfo.is4x4)
@@ -287,6 +289,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Creating the True positions for the Easy (4x4) board
     private void addTruePositionsEasy()
     {
         truePositions.Add((Vector2)p0.transform.localPosition + new Vector2(-4, 0), false);
@@ -307,6 +310,7 @@ public class GameManager : MonoBehaviour
         truePositions.Add((Vector2)p15.transform.localPosition + new Vector2(-4, 0), false);
     }
 
+    // Creating the True positions for the Hard (6x6) board
     private void addTruePositionsHard()
     {
         truePositions.Add(new Vector2((float)Math.Round(p0.transform.localPosition.x * 2 / 3 - 5.18, 1), (float)Math.Round(p0.transform.localPosition.y * 2 / 3 - 1.33, 1)), false);

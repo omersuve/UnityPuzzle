@@ -18,8 +18,11 @@ public class Graph
 
     public Graph(int v, int minR, int maxR)
     {
-        GameVariables.minRandom += minR;
-        GameVariables.maxRandom += maxR;
+        if(GameVariables.maxRandom <= 12)
+        {
+            GameVariables.minRandom += minR;
+            GameVariables.maxRandom += maxR;
+        }
         vertices = v;
         adj_list = new List<LinkedList<int>>();
         tree_adj_list = new List<LinkedList<int>>();
@@ -43,6 +46,7 @@ public class Graph
         blocks = new List<HashSet<int>>();
     }
 
+    // Finds minimum weighted path using vertices and randomly assigned weight edges
     public void Kruskals_MST(List<Edge> edges, List<int> vertices)
     {
         List<List<int>> listSet = new List<List<int>>();
@@ -93,25 +97,7 @@ public class Graph
         }
     }
 
-    void DFS_helper(int v, bool[] visited)
-    {
-        visited[v] = true;
-
-        LinkedList<int>.Enumerator iter = adj_list[v].GetEnumerator();
-        while (iter.MoveNext())
-        {
-            int n = iter.Current;
-            if (!visited[n])
-                DFS_helper(n, visited);
-        }
-    }
-
-    public void DFS(int v)
-    {
-        bool[] visited = new bool[vertices];
-        DFS_helper(v, visited);
-    }
-
+    // DFS helper function
     void DFS_helper_for_tree(int v, bool[] visited, int idx)
     {
         visited[v] = true;
@@ -126,12 +112,14 @@ public class Graph
         }
     }
 
+    // Finds the nodes that should be in the same block
     public void DFS_for_tree(int v, int idx)
     {
         bool[] visited = new bool[vertices];
         DFS_helper_for_tree(v, visited, idx);
     }
 
+    // Adds weighted edges to the Graph
     public void addEdge(int v1, int v2, int w)
     {
         adj_list[v1].AddLast(v2);
@@ -141,12 +129,14 @@ public class Graph
         edges.Add(new Edge() { vertexId1 = v1, vertexId2 = v2, weight = w });
     }
 
+    // Adds minimum weighted edges to the Minimum Spanning Tree
     public void addEdge_for_tree(int v1, int v2)
     {
         tree_adj_list[v1].AddLast(v2);
         tree_adj_list[v2].AddLast(v1);
     }
 
+    // Randomly deletes random number of edges to create random blocks
     public void randomDeletion()
     {
         while(randomDelete > 0)
@@ -166,6 +156,7 @@ public class Graph
         }
     }
 
+    // Stores MST edges for executing DFS and finding nodes in same block easily
     public void findTreeEdges()
     {
         for(int i = 0; i < tree_adj_list.Count; i++)
@@ -178,6 +169,7 @@ public class Graph
         }
     }
 
+    // Adding randomized edges for creating randomized levels
     public void addRandomWeigths()
     {
         var rand = new System.Random();

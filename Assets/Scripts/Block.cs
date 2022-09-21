@@ -9,7 +9,7 @@ public class Block : MonoBehaviour
     void Start()
     {
         if (!LoadGameInfo.isLoaded)
-            transform.position = new Vector3(Random.Range(3f, 9f), Random.Range(-3f, 3f));
+            transform.position += new Vector3(Random.Range(3f, 7f), Random.Range(-2f, 2f)) - transform.GetChild(0).position;
         
         locations = new List<Vector2>();
 

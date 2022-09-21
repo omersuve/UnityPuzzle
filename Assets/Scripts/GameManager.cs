@@ -144,7 +144,6 @@ public class GameManager : MonoBehaviour
             foreach (var v in resblocks[i])
                 GameObject.Find(v.ToString()).transform.SetParent(GameObject.Find("piece"+i).transform);
             GameObject block = GameObject.Find("piece" + i);
-            block.tag = i.ToString();
             block.AddComponent<Block>();
             blocks.Add(block);
             
